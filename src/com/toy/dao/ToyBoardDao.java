@@ -6,8 +6,8 @@ import java.util.List;
 import com.toy.dto.ToyBoardDto;
 
 public interface ToyBoardDao {
-    String selectAllsql = "SELECT * FROM TOY_BOARD";
-    String selectOnesql = "SELECT * FROM TOY_BOARD WHERE NO=?";
+    String selectAllsql = "SELECT * FROM TOY_BOARD ORDER BY NO DESC";
+    String selectOnesql = "SELECT * FROM TOY_BOARD WHERE NO=? ORDER BY NO DESC";
     String insertSql = "INSERT INTO TOY_BOARD VALUES(TOY_BOARD_SEQ.NEXTVAL, ?, ?, ?, SYSDATE)";
     String updateSql = "UPDATE TOY_BOARD SET TITLE=?, CONTENTS=? WHERE NO=?";
     String deleteSql = "DELETE FROM TOY_BOARD WHERE NO=?";

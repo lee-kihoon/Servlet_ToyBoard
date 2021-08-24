@@ -16,13 +16,14 @@ public class ToyBoardDaoImpl implements ToyBoardDao {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         List<ToyBoardDto> res = new ArrayList<ToyBoardDto>();
-        
+
         try {
             pstm = con.prepareStatement(selectAllsql);
             rs = pstm.executeQuery();
-            
-            while(rs.next()) {
-                ToyBoardDto tmp = new ToyBoardDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5));
+
+            while (rs.next()) {
+                ToyBoardDto tmp = new ToyBoardDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getDate(5));
                 res.add(tmp);
             }
         } catch (SQLException e) {
@@ -33,20 +34,20 @@ public class ToyBoardDaoImpl implements ToyBoardDao {
         }
         return res;
     }
-    
+
     @Override
     public ToyBoardDto selectOne(Connection con, int no) {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         ToyBoardDto res = null;
-        
+
         try {
             pstm = con.prepareStatement(selectOnesql);
-            pstm.setInt(1,  no);
-            
+            pstm.setInt(1, no);
+
             rs = pstm.executeQuery();
-            
-            while(rs.next()) {
+
+            while (rs.next()) {
                 res = new ToyBoardDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5));
             }
         } catch (SQLException e) {
@@ -55,68 +56,68 @@ public class ToyBoardDaoImpl implements ToyBoardDao {
             JdbcCon.close(rs);
             JdbcCon.close(pstm);
         }
-        
+
         return res;
     }
-    
+
     @Override
     public boolean insert(Connection con, ToyBoardDto dto) {
         PreparedStatement pstm = null;
         int res = 0;
-        
+
         try {
             pstm = con.prepareStatement(insertSql);
-            pstm.setString(1, dto.getUserId() );
-            pstm.setString(2, dto.getTitle() );
-            pstm.setString(3, dto.getContents() );
-            
+            pstm.setString(1, dto.getUserId());
+            pstm.setString(2, dto.getTitle());
+            pstm.setString(3, dto.getContents());
+
             res = pstm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JdbcCon.close(pstm);
         }
-        
-        return (res>0)?true:false;
+
+        return (res > 0) ? true : false;
     }
-    
+
     @Override
     public boolean update(Connection con, ToyBoardDto dto) {
         PreparedStatement pstm = null;
         int res = 0;
-        
+
         try {
             pstm = con.prepareStatement(updateSql);
-            pstm.setString(1, dto.getTitle() );
-            pstm.setString(2, dto.getContents() );
-            pstm.setInt(3, dto.getNo() );
-            
+            pstm.setString(1, dto.getTitle());
+            pstm.setString(2, dto.getContents());
+            pstm.setInt(3, dto.getNo());
+
             res = pstm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JdbcCon.close(pstm);
         }
-        return (res>0)?true:false;
-        
+        return (res > 0) ? true : false;
+
     }
-    
+
     @Override
     public boolean delete(Connection con, int no) {
         PreparedStatement pstm = null;
         int res = 0;
-        
+
         try {
             pstm = con.prepareStatement(deleteSql);
-            pstm.setInt(1,  no);
-            
+            pstm.setInt(1, no);
+
             res = pstm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JdbcCon.close(pstm);
         }
-        return (res>0)?true:false;
+        return (res > 0) ? true : false;
     }
-    
+
 } // end class

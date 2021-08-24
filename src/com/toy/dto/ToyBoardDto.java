@@ -29,7 +29,7 @@ public class ToyBoardDto {
         this.contents = contents;
     }
     
-    public ToyBoardDto(int no, String userId, String title, String contents, Date board_date) {
+    public ToyBoardDto(int no, String userId, String title, String contents, Date board_Date) {
         super();
         this.no = no;
         this.userId = userId;

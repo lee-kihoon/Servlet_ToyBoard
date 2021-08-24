@@ -10,10 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.toy.dto.ToyBoardDto;
+import com.toy.dto.ToyMemberDto;
 import com.toy.service.ToyBoardService;
 import com.toy.service.ToyBoardServiceImpl;
+import com.toy.service.ToyMemberService;
+import com.toy.service.ToyMemberServiceImpl;
 
 /**
  * Servlet implementation class ToyBoardServlet
@@ -21,6 +25,7 @@ import com.toy.service.ToyBoardServiceImpl;
 @WebServlet("/controller.do")
 public class ToyBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HttpSession session;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,16 +46,21 @@ public class ToyBoardServlet extends HttpServlet {
 	    
 	    // 요청받을 변수 선언
 	    String command = request.getParameter("command");
-	    ToyBoardService service = new ToyBoardServiceImpl();
+	    ToyBoardService boardService = new ToyBoardServiceImpl();
+	    ToyMemberService memberService = new ToyMemberServiceImpl();
+	    
 	    
 	    if (command.equals("main")) {
-	        List<ToyBoardDto> list = service.selectAll();
+	        List<ToyBoardDto> list = boardService.selectAll();
 	        request.setAttribute("list",  list);
-	        
+	        if ( (String)session.getAttribute("Id") != null) {
 	        dispatch("main.jsp", request, response);
+	        } else {
+	        dispatch("index.jsp", request, response);
+	        }
 	    } else if (command.equals("one")) {
 	        int no = Integer.parseInt(request.getParameter("no"));
-	        ToyBoardDto dto = service.selectOne(no);
+	        ToyBoardDto dto = boardService.selectOne(no);
 	        
 	        request.setAttribute("dto", dto);
 	        dispatch("selectone.jsp", request, response);
@@ -62,7 +72,7 @@ public class ToyBoardServlet extends HttpServlet {
 	        String contents = request.getParameter("f_contents");
 	        
 	        ToyBoardDto dto = new ToyBoardDto(userId, title, contents);
-	        boolean res = service.insert(dto);
+	        boolean res = boardService.insert(dto);
 	        
 	        if(res) {
 	            jsResponse("게시글이 성공적으로 작성되었습니다.", "controller.do?command=main", response);
@@ -71,7 +81,7 @@ public class ToyBoardServlet extends HttpServlet {
 	        }
 	    } else if(command.equals("update")) {
 	        int no = Integer.parseInt(request.getParameter("no"));
-	        ToyBoardDto dto = service.selectOne(no);
+	        ToyBoardDto dto = boardService.selectOne(no);
 	        
 	        request.setAttribute("dto", dto);
 	        
@@ -82,24 +92,52 @@ public class ToyBoardServlet extends HttpServlet {
 	        String contents = request.getParameter("f_contents");
 	        
 	        ToyBoardDto dto = new ToyBoardDto(no, title, contents);
-	        boolean res = service.update(dto);
-	        
-	        if(res) {
-                jsResponse("게시글이 성공적으로 수정되었습니다.", "controller.do?command=one&no=" + no, response);
-            } else {
-                dispatch("controller.do?command=update&no=" + no, request, response);
-            }
+	            boolean res = boardService.update(dto);
+	            
+	            if(res) {
+	                jsResponse("게시글이 성공적으로 수정되었습니다.", "controller.do?command=one&no=" + no, response);
+	            }  else {
+	                dispatch("controller.do?command=update&no=" + no, request, response);
+	            }
 	    } else if(command.equals("delete")) {
 	        int no = Integer.parseInt(request.getParameter("no") );
 	        
-	        boolean res = service.delete(no);
+	        boolean res = boardService.delete(no);
 	        if(res) {
                 jsResponse("게시글이 성공적으로 삭제되었습니다.", "controller.do?command=main", response);
             } else {
                 dispatch("controller.do?command=one&no=" + no, request, response);
+            } 
+	    } else if (command.equals("memberLogin")) {
+            String userId = request.getParameter("f_userId");
+            String password = request.getParameter("f_password");
+            
+            ToyMemberDto dto = memberService.selectOne(userId, password);
+            session = request.getSession(true);// true
+            request.setAttribute("dto", dto);
+            if(session !=null) session.setAttribute("Id", dto.getUserId());
+
+            dispatch("index.jsp", request, response);
+            
+        } else if (command.equals("sign_up") ) {
+	        response.sendRedirect("sign_up.jsp");
+        } else if(command.equals("memberInsert")) {
+            String userId = request.getParameter("f_userId");
+            String password = request.getParameter("f_password");
+            
+            ToyMemberDto dto = new ToyMemberDto(userId, password);
+            boolean res = memberService.insert(dto);
+            
+            if(res) {
+                jsResponse("회원가입이 완료되었습니다.", "controller.do?command=main", response);
+            } else {
+                dispatch("controller.do?command=sign_up", request, response);
             }
-	    }
-	        
+        } else if (command.equals("logout") ) {
+            session.invalidate();
+            response.sendRedirect("index.jsp");
+        }
+	    
 	}
 
 	/**

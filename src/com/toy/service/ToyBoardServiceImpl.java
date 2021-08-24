@@ -11,6 +11,7 @@ import com.toy.dto.ToyBoardDto;
 
 public class ToyBoardServiceImpl implements ToyBoardService {
     private ToyBoardDao dao = new ToyBoardDaoImpl();
+    
     @Override
     public List<ToyBoardDto> selectAll() {
         Connection con = JdbcCon.getConnection();
