@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-    <h1>게시글 보기</h1>
+    <h1>게시글</h1>
     <table border="1">
         <col width="50px">
         <col width="100px">
@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="button" value="수정" onclick="">
+                <input type="button" value="수정" onclick="location.href='controller.do?command=update&no=${dto.no}'">
                 <input type="button" value="삭제" onclick="">
                 <input type="button" value="목록" onclick="location.href='controller.do?command=main'">
             </td>

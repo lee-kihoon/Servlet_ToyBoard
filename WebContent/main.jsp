@@ -34,8 +34,8 @@
 				<td>${dto.userId }</td>
 				<td><a href="controller.do?command=one&no=${dto.no}">${dto.title }</a></td>
 				<td>${dto.board_Date }</td>
-				<td><a href="">수정</a></td>
-				<td><a href="">삭제</a></td>
+				<td><a href="controller.do?command=update&no=${dto.no }">수정</a></td>
+				<td><a href="controller.do?command=delete&no=${dto.no }">삭제</a></td>
 			</tr>
 		</c:forEach>
 		<tr>

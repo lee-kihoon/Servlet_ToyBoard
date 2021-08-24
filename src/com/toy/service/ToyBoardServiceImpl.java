@@ -29,16 +29,36 @@ public class ToyBoardServiceImpl implements ToyBoardService {
     
     @Override
     public boolean insert(ToyBoardDto dto) {
-        return false;
+        Connection con = JdbcCon.getConnection();
+        boolean res = dao.insert(con, dto);
+        if(res) {
+            JdbcCon.commit(con);
+        }
+        JdbcCon.close(con);
+        
+        return res;
     }
     
     @Override
     public boolean update(ToyBoardDto dto) {
-        return false;
+        Connection con = JdbcCon.getConnection();
+        boolean res = dao.update(con, dto);
+        if(res) {
+            JdbcCon.commit(con);
+        }
+        JdbcCon.close(con);
+        
+        return res;
     }
     
     @Override
     public boolean delete(int no) {
-        return false;
+        Connection con = JdbcCon.getConnection();
+        boolean res = dao.delete(con, no);
+        if(res) {
+            JdbcCon.commit(con);
+        }
+        JdbcCon.close(con);
+        return res;
     }
 }

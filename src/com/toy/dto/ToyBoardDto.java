@@ -16,6 +16,19 @@ public class ToyBoardDto {
         super();
     }
     
+    public ToyBoardDto(String userId, String title, String contents) {
+        super();
+        this.userId = userId;
+        this.title = title;
+        this.contents = contents;
+    }
+    public ToyBoardDto(int no, String title, String contents) {
+        super();
+        this.no = no;
+        this.title = title;
+        this.contents = contents;
+    }
+    
     public ToyBoardDto(int no, String userId, String title, String contents, Date board_date) {
         super();
         this.no = no;

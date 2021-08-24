@@ -8,7 +8,9 @@ import com.toy.dto.ToyBoardDto;
 public interface ToyBoardDao {
     String selectAllsql = "SELECT * FROM TOY_BOARD";
     String selectOnesql = "SELECT * FROM TOY_BOARD WHERE NO=?";
-    
+    String insertSql = "INSERT INTO TOY_BOARD VALUES(TOY_BOARD_SEQ.NEXTVAL, ?, ?, ?, SYSDATE)";
+    String updateSql = "UPDATE TOY_BOARD SET TITLE=?, CONTENTS=? WHERE NO=?";
+    String deleteSql = "DELETE FROM TOY_BOARD WHERE NO=?";
     // 게시글 전체 출력
     public List<ToyBoardDto> selectAll(Connection con);
     // 게시글 하나 출력
