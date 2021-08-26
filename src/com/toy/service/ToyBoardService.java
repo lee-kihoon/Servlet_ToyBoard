@@ -9,7 +9,7 @@ public interface ToyBoardService {
     public List<ToyBoardDto> selectAll();
     // 게시글 하나 출력
     public ToyBoardDto selectOne(int no);
-    // 글쓰기
+    // 글쓰기 
     public boolean insert(ToyBoardDto dto);
     // 글수정
     public boolean update(ToyBoardDto dto);
