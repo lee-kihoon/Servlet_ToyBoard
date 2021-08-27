@@ -10,7 +10,7 @@ public class ToyBoardDto {
     private String contents;
     private Date board_Date;
     // end 필드
-    
+     
     // 생성자
     public ToyBoardDto() {
         super();
